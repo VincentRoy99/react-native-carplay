@@ -698,6 +698,9 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
     for (NSDictionary *tpl in tpls) {
         CPTemplate *templ = [store findTemplateById:tpl[@"id"]];
         // @todo UITabSystemItem
+        [templ setTabTitle:tpl[@"config"][@"tabTitle"]];
+        UIImage *tabImage = [RCTConvert UIImage:tpl[@"config"][@"tabImage"]];
+	    [templ setTabImage:tabImage];
         [templates addObject:templ];
     }
     return templates;
