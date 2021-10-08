@@ -278,6 +278,11 @@ RCT_EXPORT_METHOD(createTemplate:(NSString *)templateId config:(NSDictionary*)co
     [store setTemplate:templateId template:template];
 }
 
+RCT_EXPORT_METHOD(listItemMaximumSize:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    CGSize size = CPListItem.maximumImageSize;
+    resolve(@{@"width": [NSNumber numberWithFloat:size.width], @"height": [NSNumber numberWithFloat:size.height]});
+}
+
 RCT_EXPORT_METHOD(createTrip:(NSString*)tripId config:(NSDictionary*)config) {
     RNCPStore *store = [RNCPStore sharedManager];
     CPTrip *trip = [self parseTrip:config];
@@ -788,7 +793,7 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
         NSString *_detailText = [item objectForKey:@"detailText"];
         NSString *_text = [item objectForKey:@"text"];
         UIImage *_image = [RCTConvert UIImage:[item objectForKey:@"image"]];
-        if (item[@"imgUrl"]) {
+        if (item[@"imgUrl"] && [item[@"imgUrl"] length] != 0) {
             _image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[RCTConvert NSString:item[@"imgUrl"]]]]];
         }
         CPListItem *_item = [[CPListItem alloc] initWithText:_text detailText:_detailText image:_image showsDisclosureIndicator:_showsDisclosureIndicator];
