@@ -186,8 +186,7 @@ RCT_EXPORT_METHOD(createTemplate:(NSString *)templateId config:(NSDictionary*)co
         tabBarTemplate.delegate = self;
         template = tabBarTemplate;
     } else if ([type isEqualToString:@"contact"]) {
-        CPContact *contact = [[CPContact alloc] init];
-        [contact setName:config[@"name"]];
+        CPContact *contact = [[CPContact alloc] initWithName:config[@"name"] image:[RCTConvert UIImage:config[@"image"]]];
         [contact setSubtitle:config[@"subtitle"]];
         [contact setActions:[self parseButtons:config[@"actions"] templateId:templateId]];
         CPContactTemplate *contactTemplate = [[CPContactTemplate alloc] initWithContact:contact];
@@ -711,7 +710,7 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
         NSString *type = [button objectForKey:@"type"];
         if ([type isEqualToString:@"call"]) {
             _button = [[CPContactCallButton alloc] initWithHandler:^(__kindof CPButton * _Nonnull contactButton) {
-                [self sendEventWithName:@"buttonPressed" body:@{@"id": _id, @"templateId":templateId}];
+                [self sendEventWithName:@"gridButtonPressed" body:@{@"id": _id, @"templateId":templateId}];
             }];
         } else if ([type isEqualToString:@"message"]) {
             _button = [[CPContactMessageButton alloc] initWithPhoneOrEmail:[button objectForKey:@"phoneOrEmail"]];
