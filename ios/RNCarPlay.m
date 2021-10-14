@@ -186,7 +186,13 @@ RCT_EXPORT_METHOD(createTemplate:(NSString *)templateId config:(NSDictionary*)co
         tabBarTemplate.delegate = self;
         template = tabBarTemplate;
     } else if ([type isEqualToString:@"contact"]) {
-        CPContact *contact = [[CPContact alloc] initWithName:config[@"name"] image:[RCTConvert UIImage:config[@"image"]]];
+         UIImage *_image = nil;
+        if ([config[@"imgUrl"] length] != 0) {
+            _image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[RCTConvert NSString:config[@"imgUrl"]]]]];
+        } else {
+            _image = [RCTConvert UIImage:config[@"image"]];
+        }
+        CPContact *contact = [[CPContact alloc] initWithName:config[@"name"] image:_image];
         [contact setSubtitle:config[@"subtitle"]];
         [contact setActions:[self parseButtons:config[@"actions"] templateId:templateId]];
         CPContactTemplate *contactTemplate = [[CPContactTemplate alloc] initWithContact:contact];
