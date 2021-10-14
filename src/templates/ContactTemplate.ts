@@ -17,7 +17,7 @@ interface ContactActionMessage extends ContactActionBase {
   phoneOrEmail: string;
 }
 
-type ContactAction = ContactActionBase | ContactActionMessage;
+export type ContactAction = ContactActionBase | ContactActionMessage;
 
 export interface ContactTemplateConfig extends TemplateConfig {
   name: string;
