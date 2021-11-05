@@ -778,22 +778,39 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
 }
 
 - (NSArray<CPListItem*>*)parseListItems:(NSArray*)items startIndex:(int)startIndex {
-    NSMutableArray *_items = [NSMutableArray array];
+     NSMutableArray *_items = [NSMutableArray array];
     int index = startIndex;
     for (NSDictionary *item in items) {
         BOOL _showsDisclosureIndicator = [item objectForKey:@"showsDisclosureIndicator"];
         NSString *_detailText = [item objectForKey:@"detailText"];
         NSString *_text = [item objectForKey:@"text"];
         UIImage *_image = [RCTConvert UIImage:[item objectForKey:@"image"]];
+        NSString *_trailingText = [item objectForKey:@"trailingText"];
+        bool isMessageListItem = [item objectForKey:@"isMessageListItem"];
         if (item[@"imgUrl"] && [item[@"imgUrl"] length] != 0) {
             _image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[RCTConvert NSString:item[@"imgUrl"]]]]];
         }
-        CPListItem *_item = [[CPListItem alloc] initWithText:_text detailText:_detailText image:_image showsDisclosureIndicator:_showsDisclosureIndicator];
-        if ([item objectForKey:@"isPlaying"]) {
-            [_item setPlaying:[RCTConvert BOOL:[item objectForKey:@"isPlaying"]]];
+        
+        if ([[item objectForKey:@"isMessageListItem"] isEqualToNumber:@1]) {
+            //Leading config (can add a pin or star glyph)
+            CPMessageLeadingItem *_leadingItem = CPMessageLeadingItemNone;
+            CPMessageListItemLeadingConfiguration *_leadingConfig = [[CPMessageListItemLeadingConfiguration alloc] initWithLeadingItem:_leadingItem leadingImage:_image unread:false];
+            //Trailing config (can add mute glyph)
+            CPMessageTrailingItem *_trailingItem = CPMessageTrailingItemNone;
+            CPMessageListItemTrailingConfiguration *_trailingConfig = [[CPMessageListItemTrailingConfiguration alloc] initWithTrailingItem:_trailingItem trailingImage:NULL];
+            
+            CPMessageListItem *_item = [[CPMessageListItem alloc] initWithConversationIdentifier:[NSString stringWithFormat:@"%d", index] text:_text leadingConfiguration:_leadingConfig trailingConfiguration:_trailingConfig detailText:_detailText trailingText:_trailingText];
+            [_items addObject:_item];
         }
-        [_item setUserInfo:@{ @"index": @(index) }];
-        [_items addObject:_item];
+        else if ([[item objectForKey:@"isMessageListItem"] isEqualToNumber:@0]) {
+           CPListItem *_item = [[CPListItem alloc] initWithText:_text detailText:_detailText image:_image showsDisclosureIndicator:_showsDisclosureIndicator];
+            
+            if ([item objectForKey:@"isPlaying"]) {
+                [_item setPlaying:[RCTConvert BOOL:[item objectForKey:@"isPlaying"]]];
+            }
+            [_item setUserInfo:@{ @"index": @(index) }];
+            [_items addObject:_item];
+        }
         index = index + 1;
     }
     return _items;

@@ -22,6 +22,8 @@ type ContactAction = ContactActionBase | ContactActionMessage;
 export interface ContactTemplateConfig extends TemplateConfig {
   name: string;
   subtitle?: string;
+  image?: any;
+  imgUrl?: string; 
   actions?: ContactAction[];
   /**
    * Fired when bar button is pressed
