@@ -786,7 +786,6 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
         NSString *_text = [item objectForKey:@"text"];
         UIImage *_image = [RCTConvert UIImage:[item objectForKey:@"image"]];
         NSString *_trailingText = [item objectForKey:@"trailingText"];
-        bool isMessageListItem = [item objectForKey:@"isMessageListItem"];
         if (item[@"imgUrl"] && [item[@"imgUrl"] length] != 0) {
             _image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[RCTConvert NSString:item[@"imgUrl"]]]]];
         }
@@ -802,7 +801,7 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
             CPMessageListItem *_item = [[CPMessageListItem alloc] initWithConversationIdentifier:[NSString stringWithFormat:@"%d", index] text:_text leadingConfiguration:_leadingConfig trailingConfiguration:_trailingConfig detailText:_detailText trailingText:_trailingText];
             [_items addObject:_item];
         }
-        else if ([[item objectForKey:@"isMessageListItem"] isEqualToNumber:@0]) {
+        else {
            CPListItem *_item = [[CPListItem alloc] initWithText:_text detailText:_detailText image:_image showsDisclosureIndicator:_showsDisclosureIndicator];
             
             if ([item objectForKey:@"isPlaying"]) {
