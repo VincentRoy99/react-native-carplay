@@ -778,7 +778,7 @@ RCT_EXPORT_METHOD(updateMapTemplateMapButtons:(NSString*) templateId mapButtons:
 }
 
 - (NSArray<CPListItem*>*)parseListItems:(NSArray*)items startIndex:(int)startIndex {
-     NSMutableArray *_items = [NSMutableArray array];
+    NSMutableArray *_items = [NSMutableArray array];
     int index = startIndex;
     for (NSDictionary *item in items) {
         BOOL _showsDisclosureIndicator = [item objectForKey:@"showsDisclosureIndicator"];
