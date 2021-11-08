@@ -19,6 +19,14 @@ export interface ListItem {
    */
   imgUrl?: null;
   /**
+   * Extra text displayed on the trailing portion of the list item, left of the disclosure indicator.
+   */
+  trailingText?: string;
+  /**
+   * A Boolean value indicating whether the list item is of type CPMessageListItem or CPListItem.
+   */
+  isMessageListItem: boolean;
+  /**
    * A Boolean value indicating whether the list item cell shows a disclosure indicator on the trailing edge of the list item cell.
    */
   showsDisclosureIndicator?: boolean;

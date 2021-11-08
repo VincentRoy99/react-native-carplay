@@ -8,6 +8,14 @@ export interface ListTemplateConfig extends TemplateConfig {
    */
   title?: string;
   /**
+   * The tabBar title displayed if the listTemplate is part of a TabBarTemplate.
+   */
+  tabTitle?: string;
+  /**
+   * The tabBar image displayed if the listTemplate is part of a TabBarTemplate.
+   */
+  tabImage?: any;
+  /**
    * The sections displayed in the list.
    */
   sections: ListSection[];
